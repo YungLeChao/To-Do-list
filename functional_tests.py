@@ -21,7 +21,7 @@ class NewVistorTest(unittest.TestCase):
         # 她注意到网页的标题和头部都包含"To-Do"这个词
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('To-Do', self.header_text)
+        self.assertIn('To-Do', header_text)
 
         # 应用邀请她输入一个待办事项
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -38,8 +38,9 @@ class NewVistorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(any(rows.text == '1: Buy peacock feathers')
-                        for row in rows)
+        self.assertTrue(
+            any(row.text == '1: Buy peacock feathers' for row in rows),"New to-do item did not appear in table"
+            )
 
         # 页面中又显示了一个文本框,可以输入其他的待办事项
         # 她有输入了"Use peacck feathers to make a fly"
