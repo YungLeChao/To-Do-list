@@ -42,6 +42,9 @@ class NewVistorTest(LiveServerTestCase):
         # 待办事项表格中显示了"1: Buy peacock feathers"
         inputbox.send_keys(Keys.ENTER)
 
+        edith_list_url = self.browser.current_url
+        self.assertRegex(edith_list_url, '/lists/.+')
+
         self.check_for_row_in_list_table('1: Buy peacock feathers')
         #self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows), "New to-do item did not appear in table -- its text was:\n%s" % (table.text, ))
 
@@ -57,12 +60,37 @@ class NewVistorTest(LiveServerTestCase):
         self.check_for_row_in_list_table(
             '2: Use peacock feathers to make a fly')
 
-        # 伊迪丝想知道这个网站是否会记住她的清单
+        #頁面再次更新, 她的清單中顯示了這兩個待辦事項
+        self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
+        self.check_for_row_in_list_table('1: Buy peacock feathers')
+        #現在一個叫弗朗西斯的新用戶反問了網站
 
-        # 她看到网站为她 生成了一个唯一的URL
-        # 而且页面中又一些文字解说了这个功能
-        self.fail('Finish the test!')
+        ##我們使用一個新瀏覽器繪畫
+        ##確保伊迪絲的信息不會從cookie中洩露出來
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
 
-        # 她访问那个URL,发现她的待办事项列表还在
+        #弗朗西斯訪問首頁
+        #頁面中看不到伊迪丝的清單
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertNotIn('make a fly', page_text)
 
-        # 她很满意,去睡觉了
+        #弗朗西斯輸入一個新待辦事項,新建一個清單
+        #他不想伊迪絲那樣兴趣盎然
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+
+        #弗朗西斯获得了他的唯一的URL
+        franccis_list_url = self.browser.current_url
+        self.assertRegex(franccis_list_url, '/lists/.+')
+        self.assertEqual(franccis_list_url, edith_list_url)
+
+        #这个页面还是没有伊迪丝的清单
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertIn('Buy milk', page_text)
+
+        #两人都很满意,去睡觉了
