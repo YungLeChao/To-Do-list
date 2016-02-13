@@ -60,37 +60,38 @@ class NewVistorTest(LiveServerTestCase):
         self.check_for_row_in_list_table(
             '2: Use peacock feathers to make a fly')
 
-        #頁面再次更新, 她的清單中顯示了這兩個待辦事項
-        self.check_for_row_in_list_table('2: Use peacock feathers to make a fly')
+        # 頁面再次更新, 她的清單中顯示了這兩個待辦事項
+        self.check_for_row_in_list_table(
+            '2: Use peacock feathers to make a fly')
         self.check_for_row_in_list_table('1: Buy peacock feathers')
-        #現在一個叫弗朗西斯的新用戶反問了網站
+        # 現在一個叫弗朗西斯的新用戶訪問了網站
 
-        ##我們使用一個新瀏覽器繪畫
-        ##確保伊迪絲的信息不會從cookie中洩露出來
+        # 我們使用一個新瀏覽器繪畫
+        # 確保伊迪絲的信息不會從cookie中洩露出來
         self.browser.quit()
         self.browser = webdriver.Firefox()
 
-        #弗朗西斯訪問首頁
-        #頁面中看不到伊迪丝的清單
+        # 弗朗西斯訪問首頁
+        # 頁面中看不到伊迪丝的清單
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make a fly', page_text)
 
-        #弗朗西斯輸入一個新待辦事項,新建一個清單
-        #他不想伊迪絲那樣兴趣盎然
+        # 弗朗西斯輸入一個新待辦事項,新建一個清單
+        # 他不想伊迪絲那樣兴趣盎然
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Buy milk')
         inputbox.send_keys(Keys.ENTER)
 
-        #弗朗西斯获得了他的唯一的URL
-        franccis_list_url = self.browser.current_url
-        self.assertRegex(franccis_list_url, '/lists/.+')
-        self.assertEqual(franccis_list_url, edith_list_url)
+        # 弗朗西斯获得了他的唯一的URL
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
 
-        #这个页面还是没有伊迪丝的清单
+        # 这个页面还是没有伊迪丝的清单
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
 
-        #两人都很满意,去睡觉了
+        # 两人都很满意,去睡觉了
