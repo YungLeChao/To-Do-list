@@ -94,4 +94,14 @@ class NewVistorTest(LiveServerTestCase):
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
 
+    def test_layoyut_and_styling(self):
+        # 伊迪絲訪問首頁
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # 她看到輸入框完美地居中顯示
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=5)
+
         # 两人都很满意,去睡觉了
