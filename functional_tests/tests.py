@@ -1,16 +1,16 @@
-from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-#import unittest
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 
-class NewVistorTest(LiveServerTestCase):
+class NewVistorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        self.browser.refresh()
         self.browser.quit()
 
     def check_for_row_in_list_table(self, row_text):
@@ -102,6 +102,6 @@ class NewVistorTest(LiveServerTestCase):
         # 她看到輸入框完美地居中顯示
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(
-            inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=5)
+            inputbox.location['x'] + inputbox.size['width'] / 2, 512, delta=10)
 
         # 两人都很满意,去睡觉了
