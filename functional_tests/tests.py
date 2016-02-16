@@ -1,9 +1,24 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+import sys
 
 
 class NewVistorTest(StaticLiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        for arg in sys.argv:
+            if 'liveserver' in arg:
+                cls.server_url = 'http://' + arg.split('=')[1]
+                return
+        super().setUpClass()
+        cls.server_url = cls.live_server_url
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls.server_url == cls.live_server_url:
+            super().tearDownClass()
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -22,7 +37,7 @@ class NewVistorTest(StaticLiveServerTestCase):
 
         # 伊迪丝听说有一个很酷的在线待办事项应用
         # 她去看了这个应用的首页
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
 
         # 她注意到网页的标题和头部都包含"To-Do"这个词
         self.assertIn('To-Do', self.browser.title)
@@ -73,7 +88,7 @@ class NewVistorTest(StaticLiveServerTestCase):
 
         # 弗朗西斯訪問首頁
         # 頁面中看不到伊迪丝的清單
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make a fly', page_text)
@@ -96,7 +111,7 @@ class NewVistorTest(StaticLiveServerTestCase):
 
     def test_layoyut_and_styling(self):
         # 伊迪絲訪問首頁
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         self.browser.set_window_size(1024, 768)
 
         # 她看到輸入框完美地居中顯示
