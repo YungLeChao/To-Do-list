@@ -3,7 +3,7 @@
 # @Author: YungLeChao
 # @Date:   2016-02-20 15:13:05
 # @Last Modified by:   YungLeChao
-# @Last Modified time: 2016-02-20 15:54:49
+# @Last Modified time: 2016-02-20 22:39:49
 # @Email: zhaoyongle77@gmail.com
 
 from __future__ import print_function
@@ -22,3 +22,7 @@ class ItemForm(forms.models.ModelForm):
             attrs={'placeholder': 'Enter a to-do item', 'class': 'form-control input-lg', }), }
         error_messages = {
             'text': {'required': EMPTY_LIST_ERROR}}
+
+    def save(self, for_list):
+        self.instance.list = for_list
+        return super().save()

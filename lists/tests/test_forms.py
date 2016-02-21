@@ -3,13 +3,14 @@
 # @Author: YungLeChao
 # @Date:   2016-02-20 15:09:19
 # @Last Modified by:   YungLeChao
-# @Last Modified time: 2016-02-20 16:58:00
+# @Last Modified time: 2016-02-20 22:40:21
 # @Email: zhaoyongle77@gmail.com
 
 from __future__ import print_function
 from django.test import TestCase
 
 from lists.forms import EMPTY_LIST_ERROR, ItemForm
+from lists.models import Item, List
 
 
 class ItemFormTest(TestCase):
@@ -23,3 +24,11 @@ class ItemFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors['text'], [EMPTY_LIST_ERROR])
+
+    def test_form_save_handles_saving_to_a_list(self):
+        list_ = List.objects.create()
+        form = ItemForm(data={'text': 'do me'})
+        new_item = form.save(for_list=list_)
+        self.assertEqual(new_item, Item.objects.first())
+        self.assertEqual(new_item.text, 'do me')
+        self.assertEqual(new_item.list, list_)

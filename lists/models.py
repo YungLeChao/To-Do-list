@@ -9,8 +9,11 @@ class List(models.Model):
 
 class Item(models.Model):
     """docstring for Item"""
-    text = models.TextField(default='')
+    text = models.TextField(default='',)
     list = models.ForeignKey(List, default=None)
 
+    class Meta:
+        unique_together = ('list', 'text')
 
-# Create your models here.
+
+# Create your models `here.
