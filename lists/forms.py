@@ -3,7 +3,7 @@
 # @Author: YungLeChao
 # @Date:   2016-02-20 15:13:05
 # @Last Modified by:   YungLeChao
-# @Last Modified time: 2016-02-20 22:39:49
+# @Last Modified time: 2016-02-21 22:06:38
 # @Email: zhaoyongle77@gmail.com
 
 from __future__ import print_function
@@ -11,6 +11,7 @@ from django import forms
 from lists.models import Item
 
 EMPTY_LIST_ERROR = "You can't have an empty list item"
+DUPLICATE_ITEM_ERROR = "You've already got this in your list"
 
 
 class ItemForm(forms.models.ModelForm):

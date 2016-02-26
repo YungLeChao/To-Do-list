@@ -3,13 +3,14 @@
 # @Author: YungLeChao
 # @Date:   2016-02-20 15:09:19
 # @Last Modified by:   YungLeChao
-# @Last Modified time: 2016-02-20 22:40:21
+# @Last Modified time: 2016-02-21 22:11:40
 # @Email: zhaoyongle77@gmail.com
 
 from __future__ import print_function
 from django.test import TestCase
 
-from lists.forms import EMPTY_LIST_ERROR, ItemForm
+from lists.forms import (
+    EMPTY_LIST_ERROR, ItemForm, DUPLICATE_ITEM_ERROR, ExistingListItemForm)
 from lists.models import Item, List
 
 

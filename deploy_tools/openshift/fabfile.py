@@ -3,12 +3,12 @@ from fabric.api import env, local, run
 import random
 
 REPO_URL = 'https://github.com/yunglechao/To-Do-list.git'
-env.user = 'ubuntu'
-env.host_string = '54.183.29.98'
+env.user = '56ce6ea97628e11572000114'
+env.host_string = '52.3.98.99'
 
 
 def deploy():
-    site_folder = '/home/ubuntu/sites/www.yunglechao.me'
+    site_folder = '/var/lib/openshift/56ce6ea97628e11572000114/superlists-staging.ottg.cn'
     source_folder = site_folder + '/source'
     _create_directory_structure_if_necessary(site_folder)
     _get_latest_source(source_folder)
