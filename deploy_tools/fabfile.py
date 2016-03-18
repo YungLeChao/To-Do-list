@@ -4,7 +4,7 @@ import random
 
 REPO_URL = 'https://github.com/yunglechao/To-Do-list.git'
 env.user = 'ubuntu'
-env.host_string = '54.183.29.98'
+env.host_string = '52.8.235.197'
 
 
 def deploy():
