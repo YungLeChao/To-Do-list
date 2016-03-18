@@ -39,9 +39,9 @@ class ItemValidationTest(FunctionalTest):
         self.check_for_row_in_list_table('1: Buy wellies')
 
         # 她不小心输入了一个重复的待办事项
-        self.get_item_input_box().send_keys('Buy wellies')
+        self.get_item_input_box().send_keys('Buy wellies\n')
 
         # 她看到一条有帮助的错误信息
         self.check_for_row_in_list_table('1: Buy wellies')
-        error = self.browser.find_element_by_css_selector('.has_error')
+        error = self.browser.find_element_by_css_selector('.has-error')
         self.assertEqual(error.text, "You've already got this in your list")
