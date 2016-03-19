@@ -2,7 +2,7 @@
 # @Author: YungLeChao
 # @Date:   2016-03-19 15:39:24
 # @Last Modified by:   YungLeChao
-# @Last Modified time: 2016-03-19 16:32:31
+# @Last Modified time: 2016-03-19 16:43:09
 from .base import FunctionalTest
 from selenium.webdriver.support.ui import WebDriverWait
 import time
@@ -14,7 +14,7 @@ class LoginTest(FunctionalTest):
         # 伊迪丝访问这个很棒的超级列表网站
         # 第一次注意到"Sign in"链接
         self.browser.get(self.server_url)
-        self.browser.find_element_by_id('login').click()
+        self.browser.find_element_by_id('id_login').click()
 
         # 出现一个Persona登录框
         self.switch_to_new_window('Moliza Persona')
@@ -27,7 +27,7 @@ class LoginTest(FunctionalTest):
         self.switch_to_new_window('To-Do')
 
         # 她发现自己已经登陆
-        self.wait_for_element_with_id('logout')
+        self.wait_for_element_with_id('id_logout')
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertIn('edith@mockmyid.com', navbar.text)
 
