@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-# @Author: YungLeChao
-# @Date:   2016-03-20 11:45:45
-# @Last Modified by:   YungLeChao
-# @Last Modified time: 2016-03-20 15:04:35
+import logging
 import requests
-
+from django.conf import settings
 from django.contrib.auth import get_user_model
-
 User = get_user_model()
-PERSONA_VERIFY_URL = 'https://verifier.persona.org/verify'
-DOMAIN = 'localhost'
+logger = logging.getLogger(__name__)
+
+PERSONA_VERIFY_URL = 'https://verifier.login.persona.org/verify'
 
 
 class PersonaAuthenticationBackend(object):
@@ -17,7 +13,7 @@ class PersonaAuthenticationBackend(object):
     def authenticate(self, assertion):
         response = requests.post(
             PERSONA_VERIFY_URL,
-            data={'assertion': assertion, 'audience': DOMAIN}
+            data={'assertion': assertion, 'audience': settings.DOMAIN}
         )
         if response.ok and response.json()['status'] == 'okay':
             email = response.json()['email']
@@ -25,6 +21,10 @@ class PersonaAuthenticationBackend(object):
                 return User.objects.get(email=email)
             except User.DoesNotExist:
                 return User.objects.create(email=email)
+        else:
+            logger.warning(
+                'Persona says no. Json was: {}'.format(response.json())
+            )
 
     def get_user(self, email):
         try:

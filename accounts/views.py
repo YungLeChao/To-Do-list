@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
+from django.shortcuts import redirect
 
 
 def persona_login(request):

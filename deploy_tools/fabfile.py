@@ -4,7 +4,7 @@ import random
 
 REPO_URL = 'https://github.com/yunglechao/To-Do-list.git'
 env.user = 'ubuntu'
-env.host_string = '52.8.235.197'
+env.host_string = 'todo.yunglechao.me'
 
 
 def deploy():
@@ -35,8 +35,7 @@ def _get_latest_source(source_folder):
 def _update_settings(source_folder, site_name):
     settings_path = source_folder + '/superlists/settings.py'
     sed(settings_path, "DEBUG = True", "DEBUG = False")
-    sed(settings_path, 'ALLOWED_HOSTS =.+$',
-        'ALLOWED_HOSTS = ["%s"]' % (site_name,))
+    sed(settings_path, 'DOMAIN = "localhost"', 'DOMAIN = "%s"' % (site_name))
     secret_key_file = source_folder + '/superlists/secret_key.py'
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
